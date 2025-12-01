@@ -59,9 +59,9 @@ Clone the repository:
 bash
 Copy
 Edit
-git clone https://github.com/your-username/FakeNewsDetection.git
+git clone https://github.com/shivamyadav039/FakeNewsDetection.git
 cd FakeNewsDetection
-Create and activate a virtual environment (optional but recommended):
+
 
 bash
 Copy
