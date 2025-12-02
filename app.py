@@ -1,23 +1,16 @@
+# app.py
 import streamlit as st
-import joblib
+from bert_predict import predict_news
 
-# Load model & vectorizer
-model = joblib.load("models/model.pkl")
-vectorizer = joblib.load("models/vectorizer.pkl")
+st.title("📰 Fake News Detection System (BERT)")
+st.write("Paste a news article or headline below 👇")
 
-st.title("📰 Fake News Detection")
+news_input = st.text_area("Enter News Text Here", height=200)
 
-article = st.text_area("Paste a news article here:")
-
-if st.button("Check if it's Fake or Real"):
-    if not article.strip():
-        st.warning("Please enter a news article.")
+if st.button("Check News"):
+    if news_input.strip() == "":
+        st.warning("⚠️ Please enter some news text.")
     else:
-        vector = vectorizer.transform([article])
-        prediction = model.predict(vector)[0]
-
-        if prediction == 1:
-            st.success("✅ This article is Real.")
-        else:
-            st.error("⚠️ This article is Fake.")
-
+        label, confidence = predict_news(news_input)
+        st.success(f"✅ This news is predicted to be: **{label}**")
+        st.info(f"🧠 Prediction confidence: {confidence}")
