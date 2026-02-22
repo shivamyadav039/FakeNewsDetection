@@ -1,4 +1,5 @@
 # src/bert_predict.py
+import os
 import torch
 from transformers import BertTokenizerFast, BertForSequenceClassification
 
@@ -10,17 +11,36 @@ MODEL_PATH = "models/bert_model"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # =========================
-# 2. Load Model & Tokenizer (Only Once)
+# 2. Load Model & Tokenizer (Only Once, with error handling)
 # =========================
-tokenizer = BertTokenizerFast.from_pretrained(MODEL_PATH)
-model = BertForSequenceClassification.from_pretrained(MODEL_PATH)
-model.to(device)
-model.eval()
+tokenizer = None
+model = None
+
+if os.path.exists(MODEL_PATH) and os.path.isdir(MODEL_PATH):
+    try:
+        tokenizer = BertTokenizerFast.from_pretrained(MODEL_PATH)
+        model = BertForSequenceClassification.from_pretrained(MODEL_PATH)
+        model.to(device)
+        model.eval()
+        print(f"✅ BERT model loaded from {MODEL_PATH}")
+    except Exception as e:
+        print(f"⚠️ Failed to load BERT model: {e}")
+        tokenizer = None
+        model = None
+else:
+    print(f"⚠️ BERT model not found at {MODEL_PATH}. Run src/bert_train.py to train it.")
 
 # =========================
 # 3. Prediction Function
 # =========================
 def predict_news(text):
+    # Check if model is loaded
+    if tokenizer is None or model is None:
+        raise RuntimeError(
+            "BERT model not available. "
+            "Please train the model first by running: python src/bert_train.py"
+        )
+    
     if isinstance(text, str):
         texts = [text]
     else:

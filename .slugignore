@@ -1,0 +1,13 @@
+runtime.txt
+*.pyc
+__pycache__
+.venv
+venv
+.git
+.DS_Store
+models/bert_model
+models/*.h5
+data/Fake.csv
+data/True.csv
+data/news.csv
+*.md

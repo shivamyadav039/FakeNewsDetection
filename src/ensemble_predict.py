@@ -1,33 +1,23 @@
 import os
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-import joblib
 import numpy as np
 from src.bert_predict import predict_news
+from src.model_loader import load_all_models
 
 # =========================
-# Safe Model Loader
+# Load Models Once (Using Centralized Loader)
 # =========================
-def safe_load(path):
-    try:
-        model = joblib.load(path)
-        print(f"✅ Loaded: {path}")
-        return model
-    except Exception as e:
-        print(f"⚠️ Failed to load {path}: {e}")
-        return None
+_models = load_all_models()
 
-# =========================
-# Load Models Safely
-# =========================
-tfidf_model = safe_load("models/tfidf_model.pkl")
-tfidf_vectorizer = safe_load("models/tfidf_vectorizer.pkl")
+tfidf_model = _models.get("TF-IDF")
+tfidf_vectorizer = _models.get("TFIDF_Vectorizer")
 
-rf_model = safe_load("models/rf_model.pkl")
-rf_vectorizer = safe_load("models/rf_vectorizer.pkl")
+rf_model = _models.get("Random Forest")
+rf_vectorizer = _models.get("RF_Vectorizer")
 
-xgb_model = safe_load("models/xgb_model.pkl")
-xgb_vectorizer = safe_load("models/xgb_vectorizer.pkl")
+xgb_model = _models.get("XGBoost")
+xgb_vectorizer = _models.get("XGB_Vectorizer")
 
 # =========================
 # Ensemble Prediction Function

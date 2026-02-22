@@ -1,9 +1,41 @@
 # Python cache
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
 # Virtual environment
 venv/
+.venv/
+env/
+ENV/
+virtualenv/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Logs
+*.log
 
 # Dataset
 data/
@@ -13,3 +45,9 @@ models/
 
 # Mac OS
 .DS_Store
+
+# Windows
+Thumbs.db
+
+# Streamlit
+.streamlit/
